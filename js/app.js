@@ -114,6 +114,7 @@ window.render = new class {
             const link = this.symbolLinksElements[symbol.nameSymbol]
             // меняем статичные поля
             el.attr('data-symbol', symbol.nameSymbol)
+            el.on('click',() => chart.setSymbol(symbol.nameSymbol) )
             el.find('[data-name]').text(symbol.nameSymbol).attr('data-name',symbol.nameSymbol)
 
             const dynamicAttributes = ['price', 'change_percent', 'volume', 'volatility']
@@ -138,6 +139,7 @@ window.render = new class {
                      .attr('data-symbol', symbol)
                      .prependTo(this.linkBlocks.volumeGrowthList)
                      .removeClass('d-none')
+                     .on('click', () => chart.setSymbol(symbol, settings.get('historyCandleStick')))
         this.symbolLinksElements[symbol]['volumeGrowth'] = _elementClone
     }
     /**
@@ -208,6 +210,8 @@ window.binance = new class {
 window.chart = new class {
     callbackInstruments = {
         timeframes: [
+            { label: '1m', callback: () => this.setInterval('1m') },
+            { label: '3m', callback: () => this.setInterval('3m') },
             { label: '5m', callback: () => this.setInterval('5m') },
             { label: '15m', callback: () => this.setInterval('15m') },
             { label: '30m', callback: () => this.setInterval('30m') },
@@ -258,13 +262,14 @@ window.chart = new class {
     /**
      * Открываем график определенной монеты
      * @param symbol {string}
+     * @param interval {string}
      */
-    setSymbol(symbol){
+    setSymbol(symbol, interval = ''){
         const _class = symbols[symbol]
         if( !_class ) return
         this.symbol = _class
         settings.set('chart_symbol', symbol)
-        this.setInterval()
+        this.setInterval(interval)
     }
     /**
      * Получение исторических свечей для графика по заданной монете и интервалу
@@ -395,13 +400,7 @@ window.modules = {
             window.addEventListener('update_candle', this.updateVolatility.bind(this))
         }
         updateVolatility({detail: {name, close}}){
-            const symbol = window.symbols[name]
-            const candles = modules.historyCandlesticks.historySymbolsCandles[name]
-            const lastCandle = candles[candles.length - 1]
-            const priceChange = close - lastCandle.close;
-            const hv = ((priceChange / lastCandle.close) * 100);
-            symbol.attributes.volatility.set(Math.abs(hv))
-            window.render.updateElement(symbol, ['volatility'])
+            /// переделать расчет волатильности
         }
     },
     volumeGrowth: class {
@@ -533,11 +532,7 @@ window.modules = {
                     .prependTo(parentBlock)
                 target.attr('data-vector', +!vector)
             })
-            $(document).on('click','#watch-list [data-symbol]', e => {
-                const target = $(e.currentTarget)
-                chart.setSymbol(target.data('symbol'))
-            })
-            $(document).on('click','button[data-remove-settings]', e => {
+            $(document).on('click','button[data-remove-settings]', () => {
                 settings.removeSettings()
             })
         }
@@ -548,7 +543,7 @@ window.modules = {
             binance.createWebSocket('!ticker@arr', this.callback.bind(this)).then(server => this.server = server)
         }
         callback({data}){
-            data.forEach(({s: name, p: priceChange, P: priceChangePercent, c: price, q: volume}) => {
+            data.forEach(({s: name, P: priceChangePercent, c: price, q: volume}) => {
                 const symbol = window.symbols[name]
                 if( !symbol ) return false
                 symbol.attributes.price.set(price)
