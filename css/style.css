@@ -1,0 +1,31 @@
+body {
+  font-size: 14px; }
+
+#panel #other-chart {
+  min-height: 300px;
+  overflow: hidden; }
+#panel .block {
+  width: 100%;
+  max-width: 450px; }
+  #panel .block.block-right {
+    max-width: 300px !important; }
+  #panel .block #volume-growth {
+    min-height: 200px;
+    padding: 10px; }
+    #panel .block #volume-growth .list {
+      height: 0;
+      overflow-y: auto; }
+  #panel .block #watch-list {
+    padding: 10px; }
+    #panel .block #watch-list .top [data-filter]:hover {
+      cursor: pointer; }
+    #panel .block #watch-list .list {
+      height: 0;
+      overflow-y: auto; }
+    #panel .block #watch-list .fixed-width {
+      width: 25%;
+      overflow: hidden; }
+      #panel .block #watch-list .fixed-width.name-fixed-width, #panel .block #watch-list .fixed-width.volume-fixed-width {
+        width: 35% !important; }
+
+/*# sourceMappingURL=style.css.map */

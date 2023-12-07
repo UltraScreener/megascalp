@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="ru-RU" class="h-100">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://s3.tradingview.com/tv.js"></script>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body class="d-flex flex-column align-items-stretch h-100">
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">MegaScalp</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Главная</a>
+                </li>
+            </ul>
+            <button data-remove-settings class="btn btn-dark btn-sm">Сбросить настройки</button>
+        </div>
+    </div>
+</nav>    <div id="panel" class="flex-fill d-flex align-items-stretch">
+
+    <div class="block d-flex flex-column align-items-stretch">
+        <div id="watch-list" class="flex-fill d-flex flex-column align-items-stretch">
+            <div class="top d-flex align-items-center">
+                <div class="fixed-width name-fixed-width">Имя</div>
+                <div data-filter="price" data-vector="0" class="fixed-width">Цена</div>
+                <div data-filter="change_percent" data-vector="0" class="fixed-width change-percent-fixed-width">Изм. %</div>
+                <div data-filter="volume" data-vector="0" class="fixed-width volume-fixed-width">Объем</div>
+                <div data-filter="volatility" data-vector="0" class="fixed-width volatility-fixed-width">Волатиль.</div>
+            </div>
+            <div class="list flex-fill d-flex flex-grow-1 flex-column">
+                <!-- template watchList -->
+                <div data-symbol="" class="d-none symbol d-flex align-items-center">
+                    <div data-name="" class="fixed-width name-fixed-width"></div>
+                    <div data-price="" class="fixed-width"></div>
+                    <div data-change_percent="" class="fixed-width  change-percent-fixed-width"></div>
+                    <div data-volume="" class="fixed-width volume-fixed-width"></div>
+                    <div data-volatility="" class="fixed-width volatility-fixed-width"></div>
+                </div>
+                <!-- /template watchList -->
+            </div>
+        </div> <!-- /watch-list -->
+    </div> <!-- /block -->
+
+    <div id="chart" class="flex-fill d-flex flex-column align-items-stretch">
+        <div id="instruments" class="py-2 flex-fill d-flex align-items-center">
+            <button class="btn rounded-0 btn-sm btn-dark d-none" data-instrument=""></button>
+        </div>
+        <div id="symbol-chart" class="flex-fill"></div>
+        <div id="other-chart" class="d-flex justify-content-between">
+            <div id="BTCUSDT-chart" class="flex-fill"></div>
+            <div id="ETHUSDT-chart" class="flex-fill"></div>
+        </div>
+    </div>
+
+    <div class="block block-right d-flex flex-column align-items-stretch">
+        <div id="volume-growth" class="d-flex align-items-stretch flex-column">
+            <div class="d-flex justify-content-center py-3"> Список монет с ростом объемов </div>
+            <div class="list flex-fill">
+                <div class="text-center" data-non-data="">Ищем всплеск объемов...</div>
+                <!-- template VolumeGrowth -->
+                <button data-symbol="" class="d-none btn btn-sm btn-dark w-100 rounded-0"></button>
+                <!-- /template volumeGrowth -->
+            </div>
+        </div> <!-- /volume-growth -->
+    </div> <!-- /block -->
+
+</div> <!-- /panel -->
+
+
+<script src="js/lightweight-charts.standalone.production.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
