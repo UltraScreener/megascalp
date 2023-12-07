@@ -103,6 +103,9 @@ window.render = new class {
               .attr(`data-${attribute}`, symbol.attributes[attribute].get(false))
         })
     }
+    updateCalcMouseToPrice(price) {
+        $('[data-calc-to-price]').text(price + '%')
+    }
     /**
      * генерация списка монет
      */
@@ -156,7 +159,7 @@ window.render = new class {
      * @param instruments
      */
     generateInstrumentsForChart(instruments = {}){
-        const instrumentsNode = $('#instruments')
+        const instrumentsNode = $('#instruments .instruments-list')
         const el = instrumentsNode.find('button[data-instrument=""]')
         Object.keys(instruments)
             .forEach(instrument => {
@@ -248,11 +251,13 @@ window.chart = new class {
                 "symbol": `BINANCE:${symbol}`,
                 "interval": "D",
                 "timezone": "Etc/UTC",
-                "theme": "dark",
+                "theme": "light",
                 "style": "1",
                 "locale": "ru",
                 "enable_publishing": false,
-                "allow_symbol_change": true,
+                "hide_top_toolbar": false,
+                "hide_legend": true,
+                "save_image": false,
                 "container_id": symbol + '-chart'
             }
             new TradingView.widget(widget)
@@ -269,6 +274,7 @@ window.chart = new class {
         if( !_class ) return
         this.symbol = _class
         settings.set('chart_symbol', symbol)
+        render.updateCalcMouseToPrice(0)
         this.setInterval(interval)
     }
     /**
@@ -313,6 +319,7 @@ window.chart = new class {
             interval = settings.get('chart_interval')
         }
         this.interval = interval
+        render.updateCalcMouseToPrice(0)
         settings.set('chart_interval', this.interval)
         this._getCandles()
             .then(candles => {
@@ -391,7 +398,14 @@ window.chart = new class {
                 bottom: 0
             }
         })
-
+        this.chart.subscribeCrosshairMove(this._calcMouseToPrice.bind(this));
+    }
+    _calcMouseToPrice(param){
+        if( param.point === undefined ) return
+        let price = this.series.coordinateToPrice(param.point.y)
+        let currentPrice = this.symbol.attributes.price.get()
+        const percent = ((price - currentPrice) / currentPrice) * 100
+        render.updateCalcMouseToPrice(percent.toFixed(2))
     }
 }
 window.modules = {

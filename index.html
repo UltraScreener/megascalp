@@ -55,8 +55,9 @@
     </div> <!-- /block -->
 
     <div id="chart" class="flex-fill d-flex flex-column align-items-stretch">
-        <div id="instruments" class="py-2 flex-fill d-flex align-items-center">
-            <button class="btn rounded-0 btn-sm btn-dark d-none" data-instrument=""></button>
+        <div id="instruments" class="py-2 flex-fill d-flex align-items-center justify-content-between">
+            <div class="instruments-list d-flex align-items-center"><button class="btn rounded-0 btn-sm btn-dark d-none" data-instrument=""></button></div>
+            <div>До текущей цены: <span data-calc-to-price></span></div>
         </div>
         <div id="symbol-chart" class="flex-fill"></div>
         <div id="other-chart" class="d-flex justify-content-between">
